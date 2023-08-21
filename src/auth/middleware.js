@@ -1,19 +1,17 @@
 const jwt = require("jsonwebtoken");
 const blogsModel = require("../models/blogsModel");
 
+
 //=====================Authantication============================//
 const midd1 = async function (req, res, next) {
   try {
     const Token = req.headers["x-api-key"]; //getting the token from Header
-
-
     // checking token must be present or not in header
     if (!Token)
-      return res.status(404).send({ status: false, msg: "token must be present" });   
+      return res.status(404).send({ status: false, msg: "token must be present" });
 
     jwt.verify(Token, "Secret-Key", (error, decodedtoken) => {           //call back
-      if (error)
-        return res.status(401).send({ status: false, msg: "token is invalid" });
+      if (error) return res.status(401).send({ status: false, msg: "token is invalid" });
       else {
         req.decodedtoken = decodedtoken;           // req globel oject 
         return next();
@@ -24,6 +22,8 @@ const midd1 = async function (req, res, next) {
     return res.status(500).send({ msg: err.message });
   }
 };
+
+
 
 //=================================Authorization=================================//
 
@@ -43,7 +43,8 @@ const authorisation = async function (req, res, next) {
 
       //invalid Author Id
       if (!validId) {
-        return res.status(404).send({ status: false, msg: "Invalid authorId " })}
+        return res.status(404).send({ status: false, msg: "Invalid authorId " })
+      }
     }
     //........................Check validation for BlogId by Query params .............................................//
 
@@ -52,7 +53,8 @@ const authorisation = async function (req, res, next) {
       const validId = ObjectId.isValid(to_id);
       //invalid BlogId
       if (!validId) {
-        return res.status(404).send({ status: false, msg: "Invalid Objectid " })}
+        return res.status(404).send({ status: false, msg: "Invalid Objectid " })
+      }
     }
 
     //........................Check validation for BlogId by Path params .......................................//
@@ -72,7 +74,7 @@ const authorisation = async function (req, res, next) {
       const authorsId = updatingAuthorId.map((x) => x.authorId);
       const id = decodedtoken.authorId;
       if (id != authorsId)
-        return res.status(403).send({status: false,msg: "You are not authorised to perform this task 1"});
+        return res.status(403).send({ status: false, msg: "You are not authorised to perform this task 1" });
     } else {
       let AuthorId = req.query.authorId; //getting authorId from Query Parama
       toBeupdatedblogId = AuthorId;
@@ -87,7 +89,7 @@ const authorisation = async function (req, res, next) {
       }
       //checking the token data
       if (id != AuthorId)
-        return res.status(403).send({status: false,msg: "You are not authorised to perform this task 2"});
+        return res.status(403).send({ status: false, msg: "You are not authorised to perform this task 2" });
     }
     next();
   } catch (error) {

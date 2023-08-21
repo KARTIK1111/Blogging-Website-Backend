@@ -53,7 +53,7 @@ const createBlog = async function (req, res) {
       return res.status(400).send({ status: false, msg: "category is required" });
     }
     if (!IsArr(subcategory)) {
-      return res.status(400).send({status: false,msg: "Tags is required or It should be in Array"});
+      return res.status(400).send({status: false,msg: "subcatagory is required or It should be in Array"});
     }
     if (!IsVerified(title)) {
       return res.status(400).send({ status: false, msg: "Title is required" });

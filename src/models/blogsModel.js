@@ -36,7 +36,7 @@ const blogsSchema = new mongoose.Schema({
   },
   isPublished: {
     type: Boolean,
-    default: false
+    default: true
   },
 
   publishedAt: Date,
